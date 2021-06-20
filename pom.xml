@@ -48,33 +48,44 @@
 		    <groupId>org.springframework.boot</groupId> 
 		    <artifactId>spring-boot-starter-validation</artifactId> 
 		</dependency>
-		
+
 		<!-- OpenAPI -->
 		<dependency>
-		    <groupId>org.springdoc</groupId>
-		    <artifactId>springdoc-openapi-ui</artifactId>
-		    <version>1.5.2</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.5.2</version>
 		</dependency>
-		
+
 		<!-- spring doc para paginação -->
 		<dependency>
-		    <groupId>org.springdoc</groupId>
-		    <artifactId>springdoc-openapi-data-rest</artifactId>
-		    <version>1.5.2</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-data-rest</artifactId>
+			<version>1.5.2</version>
 		</dependency>
-		
+
 		<!-- / OpenAPI -->
-		
+
 		<dependency>
 			<groupId>io.swagger.core.v3</groupId>
 			<artifactId>swagger-maven-plugin</artifactId>
 			<version>2.1.9</version>
 		</dependency>
-		
+
 		<dependency>
-		    <groupId>io.swagger.core.v3</groupId>
-		    <artifactId>swagger-annotations</artifactId>
-		    <version>2.1.9</version>
+			<groupId>io.swagger.core.v3</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>2.1.9</version>
+		</dependency>
+
+		<!-- connector mysql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
 		</dependency>
 
 		<dependency>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+  <table-filter match-catalog="logistica" match-name="canal_comunicacao"/>
+  <table-filter match-catalog="logistica" match-name="pessoa"/>
+  <table-filter match-catalog="logistica" match-name="pessoa_canal_comunicacao"/>
+  <table-filter match-catalog="logistica" match-name="agendamento"/>
+  <table-filter match-catalog="logistica" match-name="status_comunicacao"/>
+  <table-filter match-catalog="logistica" match-name="destinatario_comunicacao"/>
+</hibernate-reverse-engineering>
