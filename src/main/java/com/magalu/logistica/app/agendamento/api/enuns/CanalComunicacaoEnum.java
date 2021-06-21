@@ -1,4 +1,4 @@
-package com.magalu.logistica.app.agendamento.api.model;
+package com.magalu.logistica.app.agendamento.api.enuns;
 
 /**
  * Enum com todos os canais possiveis de comunicação
