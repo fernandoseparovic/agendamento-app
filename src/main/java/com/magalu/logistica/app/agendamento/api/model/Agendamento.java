@@ -18,9 +18,6 @@ import javax.validation.constraints.Size;
 @Valid
 public class Agendamento {
 
-	@NotNull
-	private Integer idPessoaRemetente;
-	
 	@NotEmpty
 	@Valid
 	private Set<Destinatario> destinatarios;
@@ -32,20 +29,6 @@ public class Agendamento {
 	@NotNull
 	private Date dataHoraParaEnvio; // TODO verificar melhor tipo para data
 
-
-	/**
-	 * @return the idPessoaRemetente
-	 */
-	public Integer getIdPessoaRemetente() {
-		return idPessoaRemetente;
-	}
-
-	/**
-	 * @param idPessoaRemetente the idPessoaRemetente to set
-	 */
-	public void setIdPessoaRemetente(final Integer idPessoaRemetente) {
-		this.idPessoaRemetente = idPessoaRemetente;
-	}
 
 	/**
 	 * @return the destinatarios
