@@ -8,6 +8,7 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -24,20 +25,17 @@ public class DestinatarioComunicacao implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	private DestinatarioComunicacaoId id;
 	private Agendamento agendamento;
-	private PessoaCanalComunicacao pessoaCanalComunicacaoByIdCanalComunicacao;
-	private PessoaCanalComunicacao pessoaCanalComunicacaoByIdPessoaDestinatario;
+	private PessoaCanalComunicacao pessoaCanalComunicacao;
 	private StatusComunicacao statusComunicacao;
 
 	public DestinatarioComunicacao() {
 	}
 
 	public DestinatarioComunicacao(DestinatarioComunicacaoId id, Agendamento agendamento,
-			PessoaCanalComunicacao pessoaCanalComunicacaoByIdCanalComunicacao,
-			PessoaCanalComunicacao pessoaCanalComunicacaoByIdPessoaDestinatario, StatusComunicacao statusComunicacao) {
+			PessoaCanalComunicacao pessoaCanalComunicacao, StatusComunicacao statusComunicacao) {
 		this.id = id;
 		this.agendamento = agendamento;
-		this.pessoaCanalComunicacaoByIdCanalComunicacao = pessoaCanalComunicacaoByIdCanalComunicacao;
-		this.pessoaCanalComunicacaoByIdPessoaDestinatario = pessoaCanalComunicacaoByIdPessoaDestinatario;
+		this.pessoaCanalComunicacao = pessoaCanalComunicacao;
 		this.statusComunicacao = statusComunicacao;
 	}
 
@@ -66,25 +64,16 @@ public class DestinatarioComunicacao implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_canal_comunicacao", nullable = false, insertable = false, updatable = false)
-	public PessoaCanalComunicacao getPessoaCanalComunicacaoByIdCanalComunicacao() {
-		return this.pessoaCanalComunicacaoByIdCanalComunicacao;
+	@JoinColumns({
+		@JoinColumn(name = "id_canal_comunicacao", nullable = false, insertable = false, updatable = false),
+		@JoinColumn(name = "id_pessoa_destinatario", nullable = false, insertable = false, updatable = false)
+	})
+	public PessoaCanalComunicacao getPessoaCanalComunicacao() {
+		return pessoaCanalComunicacao;
 	}
 
-	public void setPessoaCanalComunicacaoByIdCanalComunicacao(
-			PessoaCanalComunicacao pessoaCanalComunicacaoByIdCanalComunicacao) {
-		this.pessoaCanalComunicacaoByIdCanalComunicacao = pessoaCanalComunicacaoByIdCanalComunicacao;
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_pessoa_destinatario", nullable = false, insertable = false, updatable = false)
-	public PessoaCanalComunicacao getPessoaCanalComunicacaoByIdPessoaDestinatario() {
-		return this.pessoaCanalComunicacaoByIdPessoaDestinatario;
-	}
-
-	public void setPessoaCanalComunicacaoByIdPessoaDestinatario(
-			PessoaCanalComunicacao pessoaCanalComunicacaoByIdPessoaDestinatario) {
-		this.pessoaCanalComunicacaoByIdPessoaDestinatario = pessoaCanalComunicacaoByIdPessoaDestinatario;
+	public void setPessoaCanalComunicacao(PessoaCanalComunicacao pessoaCanalComunicacao) {
+		this.pessoaCanalComunicacao = pessoaCanalComunicacao;
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -97,4 +86,6 @@ public class DestinatarioComunicacao implements java.io.Serializable {
 		this.statusComunicacao = statusComunicacao;
 	}
 
+
 }
+

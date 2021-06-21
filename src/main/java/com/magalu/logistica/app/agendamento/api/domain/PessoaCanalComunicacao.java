@@ -24,8 +24,7 @@ public class PessoaCanalComunicacao implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private PessoaCanalComunicacaoId id;
-	private Set<DestinatarioComunicacao> destinatarioComunicacaosForIdCanalComunicacao = new HashSet<>(0);
-	private Set<DestinatarioComunicacao> destinatarioComunicacaosForIdPessoaDestinatario = new HashSet<>(0);
+	private Set<DestinatarioComunicacao> destinatarioComunicacaos= new HashSet<>(0);
 
 	public PessoaCanalComunicacao() {
 	}
@@ -35,11 +34,9 @@ public class PessoaCanalComunicacao implements java.io.Serializable {
 	}
 
 	public PessoaCanalComunicacao(PessoaCanalComunicacaoId id,
-			Set<DestinatarioComunicacao> destinatarioComunicacaosForIdCanalComunicacao,
-			Set<DestinatarioComunicacao> destinatarioComunicacaosForIdPessoaDestinatario) {
+			Set<DestinatarioComunicacao> destinatarioComunicacaos) {
 		this.id = id;
-		this.destinatarioComunicacaosForIdCanalComunicacao = destinatarioComunicacaosForIdCanalComunicacao;
-		this.destinatarioComunicacaosForIdPessoaDestinatario = destinatarioComunicacaosForIdPessoaDestinatario;
+		this.destinatarioComunicacaos = destinatarioComunicacaos;
 	}
 
 	@EmbeddedId
@@ -55,24 +52,13 @@ public class PessoaCanalComunicacao implements java.io.Serializable {
 		this.id = id;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pessoaCanalComunicacaoByIdCanalComunicacao")
-	public Set<DestinatarioComunicacao> getDestinatarioComunicacaosForIdCanalComunicacao() {
-		return this.destinatarioComunicacaosForIdCanalComunicacao;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pessoaCanalComunicacao")
+	public Set<DestinatarioComunicacao> getDestinatarioComunicacaos() {
+		return destinatarioComunicacaos;
 	}
 
-	public void setDestinatarioComunicacaosForIdCanalComunicacao(
-			Set<DestinatarioComunicacao> destinatarioComunicacaosForIdCanalComunicacao) {
-		this.destinatarioComunicacaosForIdCanalComunicacao = destinatarioComunicacaosForIdCanalComunicacao;
+	public void setDestinatarioComunicacaos(Set<DestinatarioComunicacao> destinatarioComunicacaos) {
+		this.destinatarioComunicacaos = destinatarioComunicacaos;
 	}
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pessoaCanalComunicacaoByIdPessoaDestinatario")
-	public Set<DestinatarioComunicacao> getDestinatarioComunicacaosForIdPessoaDestinatario() {
-		return this.destinatarioComunicacaosForIdPessoaDestinatario;
-	}
-
-	public void setDestinatarioComunicacaosForIdPessoaDestinatario(
-			Set<DestinatarioComunicacao> destinatarioComunicacaosForIdPessoaDestinatario) {
-		this.destinatarioComunicacaosForIdPessoaDestinatario = destinatarioComunicacaosForIdPessoaDestinatario;
-	}
-
 }
+

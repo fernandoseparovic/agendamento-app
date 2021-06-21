@@ -1,14 +1,16 @@
 package com.magalu.logistica.app.agendamento.api.domain;
 // Generated 20 de jun de 2021 16:08:19 by Hibernate Tools 5.2.12.Final
 
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
