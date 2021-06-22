@@ -1,16 +1,16 @@
 package com.magalu.logistica.app.agendamento.api.domain;
 // Generated 20 de jun de 2021 16:08:19 by Hibernate Tools 5.2.12.Final
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -52,7 +52,7 @@ public class Agendamento implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 
 	@Column(name = "id_agendamento", unique = true, nullable = false)
 	public Integer getIdAgendamento() {
@@ -92,7 +92,7 @@ public class Agendamento implements java.io.Serializable {
 		this.dataHoraParaEnvio = dataHoraParaEnvio;
 	}
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "agendamento")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "agendamento")
 	public Set<DestinatarioComunicacao> getDestinatarioComunicacaos() {
 		return this.destinatarioComunicacaos;
 	}

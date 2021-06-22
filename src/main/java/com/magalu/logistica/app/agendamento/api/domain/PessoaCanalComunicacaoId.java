@@ -64,4 +64,9 @@ public class PessoaCanalComunicacaoId implements java.io.Serializable {
 		return result;
 	}
 
+	@Override
+	public String toString() {
+		return "PessoaCanalComunicacaoId [idCanalComunicacao=" + idCanalComunicacao + ", idPessoa=" + idPessoa + "]";
+	}
+
 }

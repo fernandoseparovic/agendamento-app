@@ -5,6 +5,7 @@ package com.magalu.logistica.app.agendamento.api.controller;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.magalu.logistica.app.agendamento.api.enuns.CanalComunicacaoEnum;
+import com.magalu.logistica.app.agendamento.api.exception.BusinessException;
 import com.magalu.logistica.app.agendamento.api.model.Agendamento;
 import com.magalu.logistica.app.agendamento.api.model.AgendamentoPaginado;
-import com.magalu.logistica.app.agendamento.api.model.CanalComunicacaoEnum;
+import com.magalu.logistica.app.agendamento.api.service.AgendamentoService;
 
 import io.micrometer.core.lang.Nullable;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -42,6 +45,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RequestMapping("/v1/agendamento")
 public class AgendamentoController {
 
+	@Autowired
+    private AgendamentoService agendamentoService;
+
 
 	@Operation(summary = "Agenda um envio de comunicação")
 	@ApiResponses(value = {
@@ -51,10 +57,10 @@ public class AgendamentoController {
 			@ApiResponse(responseCode = "400", description = "Parâmetros invalidos", content = @Content),
 			@ApiResponse(responseCode = "500", description = "Erro interno", content = @Content) })
 	@PutMapping
-	public ResponseEntity<Agendamento> agendarEnvio(@Valid @RequestBody final Agendamento agendamento) {
-		// TODO implementar
-		
-		return new ResponseEntity<>(agendamento, HttpStatus.OK);
+	public ResponseEntity<Agendamento> agendarEnvio(@Valid @RequestBody Agendamento agendamento) 
+			throws BusinessException {
+
+		return new ResponseEntity<>(agendamentoService.agendarEnvio(agendamento), HttpStatus.OK);
 	}
 	
 	
@@ -83,7 +89,7 @@ public class AgendamentoController {
 			@ApiResponse(responseCode = "400", description = "Parâmetros invalidos", content = @Content),
 			@ApiResponse(responseCode = "500", description = "Erro interno", content = @Content) })
 	@DeleteMapping
-	public ResponseEntity<Agendamento> deletaAgendamento(
+	public ResponseEntity<Agendamento> deletarAgendamento(
 			@Parameter @NotNull final Integer idAgendamentoComunicacao) {
 
 		// TODO implementar
