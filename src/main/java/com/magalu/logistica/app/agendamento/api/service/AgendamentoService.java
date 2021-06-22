@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,7 @@ public class AgendamentoService {
 	@Autowired
 	private DestinatarioComunicacaoRepository destinatarioComunicacaoRepository;
 
+
 	/**
 	 * Agenda um envio de comunicação
 	 * 
@@ -43,6 +46,23 @@ public class AgendamentoService {
 	 */
 	public Agendamento agendarEnvio(final Agendamento agendamento) throws BusinessException {
 		
+		// Ids das pessoas com seus respectivos canais de comunicação para envio
+		verificarPessoaCanalComunicacao(agendamento.getDestinatarios());
+		
+		// Persiste no banco o agendamento e os destinatarios comunicação
+		persistirAgendamentoDestinatarios(agendamento);
+
+		return agendamento;
+	}
+
+	/**
+	 * Persiste nas tabelas logistica.agendamento e logistica.destinatario_comunicacao
+	 * 
+	 * @param agendamento Agendamento de comunicação com seus respectivos destinatarios e canais
+	 */
+	@Transactional
+	private void persistirAgendamentoDestinatarios(final Agendamento agendamento) {
+		
 		// Transforma o agendamento do request no objeto para persistir no banco
 		final com.magalu.logistica.app.agendamento.api.domain.Agendamento agendamentoDomain = 
 				new com.magalu.logistica.app.agendamento.api.domain.Agendamento();
@@ -50,34 +70,29 @@ public class AgendamentoService {
 		agendamentoDomain.setDataHoraCriacao(new Date());
 		agendamentoDomain.setDataHoraParaEnvio(agendamento.getDataHoraParaEnvio());		
 
-		// TODO verificar porque não esta funcionando o save cascade
+		// Persiste na tabela logistica.agendamento 
 		final com.magalu.logistica.app.agendamento.api.domain.Agendamento agendamentoDomainPersistido = 
 				agendamentoRepository.save(agendamentoDomain);
 
 
-		// Ids das pessoas com seus respectivos canais de comunicação para envio
-		final Set<PessoaCanalComunicacaoId> idsPessoaCanal = 
-				buscarPessoaCanalComunicacao(agendamento.getDestinatarios());
-
 		// Transforma o Destinatario comunicação do resquest no objeto para persistir no banco
+		final StatusComunicacao statusComunicacao = new StatusComunicacao();
+		statusComunicacao.setIdStatusComunicacao(StatusComunicacaoEnum.AGUARDANDO_ENVIO.getCodigoStatus());
+		
 		final Set<DestinatarioComunicacao> setDestinatarioComunicacao = new HashSet<>();
-		idsPessoaCanal.forEach(pessoaCanal -> {
-			final StatusComunicacao statusComunicacao = new StatusComunicacao();
-			statusComunicacao.setIdStatusComunicacao(StatusComunicacaoEnum.AGUARDANDO_ENVIO.getCodigoStatus());
-
+		agendamento.getDestinatarios().forEach(destinatario -> {
 			final DestinatarioComunicacao destinatarioComunicacao = new DestinatarioComunicacao();
 			destinatarioComunicacao.setId(new DestinatarioComunicacaoId());
 			destinatarioComunicacao.getId().setIdAgendamento(agendamentoDomainPersistido.getIdAgendamento());
-			destinatarioComunicacao.getId().setIdCanalComunicacao(pessoaCanal.getIdCanalComunicacao());
-			destinatarioComunicacao.getId().setIdPessoaDestinatario(pessoaCanal.getIdPessoa());
+			destinatarioComunicacao.getId().setIdCanalComunicacao(destinatario.getCanalComunicacao().getCodigoCanal());
+			destinatarioComunicacao.getId().setIdPessoaDestinatario(destinatario.getIdPessoaDestinatario());
 			destinatarioComunicacao.setStatusComunicacao(statusComunicacao);
 			
 			setDestinatarioComunicacao.add(destinatarioComunicacao);
 		});
 		
+		// Persiste na tabela logistica.destinatario_comunicacao
 		destinatarioComunicacaoRepository.saveAll(setDestinatarioComunicacao);
-
-		return agendamento;
 	}
 
 	/**
@@ -87,7 +102,7 @@ public class AgendamentoService {
 	 * @return ids pessoas canal comunicação
 	 * @throws BusinessException Caso os ids de pessoa canal informados não forem encontrados no banco
 	 */
-	private Set<PessoaCanalComunicacaoId> buscarPessoaCanalComunicacao(final Set<Destinatario> destinatarios) 
+	private void verificarPessoaCanalComunicacao(final Set<Destinatario> destinatarios) 
 			throws BusinessException {
 		
 		// Busca as pessoas canal comunicação no banco
@@ -118,7 +133,5 @@ public class AgendamentoService {
 		if(!idsPessoaCanalInexistentesNoBanco.isEmpty()) {
 			throw new BusinessException("Destinatarios Canal inexistentes no banco" + idsPessoaCanalInexistentesNoBanco);
 		}
-
-		return idsPessoasCanalBanco;
 	}	
 }

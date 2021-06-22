@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -92,7 +91,7 @@ public class Agendamento implements java.io.Serializable {
 		this.dataHoraParaEnvio = dataHoraParaEnvio;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "agendamento")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "agendamento")
 	public Set<DestinatarioComunicacao> getDestinatarioComunicacaos() {
 		return this.destinatarioComunicacaos;
 	}
