@@ -1,5 +1,7 @@
 package com.magalu.logistica.app.agendamento.api.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +12,7 @@ import com.magalu.logistica.app.agendamento.api.domain.DestinatarioComunicacaoId
 public interface DestinatarioComunicacaoRepository 
 	extends PagingAndSortingRepository<DestinatarioComunicacao, DestinatarioComunicacaoId> {
 
+	@Modifying
+	@Query("delete from DestinatarioComunicacao d where d.id.idAgendamento=:idAgendamento")
+	void deleteByIdAgendamento(final Integer idAgendamento);
 }

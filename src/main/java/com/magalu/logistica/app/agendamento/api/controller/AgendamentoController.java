@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -57,7 +58,7 @@ public class AgendamentoController {
 			@ApiResponse(responseCode = "400", description = "Parâmetros invalidos", content = @Content),
 			@ApiResponse(responseCode = "500", description = "Erro interno", content = @Content) })
 	@PutMapping
-	public ResponseEntity<Agendamento> agendarEnvio(@Valid @RequestBody Agendamento agendamento) 
+	public ResponseEntity<Agendamento> agendarEnvio(@Valid @RequestBody final Agendamento agendamento) 
 			throws BusinessException {
 
 		return new ResponseEntity<>(agendamentoService.agendarEnvio(agendamento), HttpStatus.OK);
@@ -88,11 +89,12 @@ public class AgendamentoController {
 			@ApiResponse(responseCode = "200", description = "Delete realizado com sucesso", content = @Content),
 			@ApiResponse(responseCode = "400", description = "Parâmetros invalidos", content = @Content),
 			@ApiResponse(responseCode = "500", description = "Erro interno", content = @Content) })
-	@DeleteMapping
-	public ResponseEntity<Agendamento> deletarAgendamento(
-			@Parameter @NotNull final Integer idAgendamentoComunicacao) {
+	@DeleteMapping("/{idAgendamento}")
+	public ResponseEntity<Agendamento> deletarAgendamento(@PathVariable @NotNull final Integer idAgendamento) 
+			throws BusinessException {
 
-		// TODO implementar
+		agendamentoService.deletarAgendamento(idAgendamento);
+
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }
