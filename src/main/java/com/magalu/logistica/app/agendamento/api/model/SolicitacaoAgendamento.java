@@ -10,13 +10,13 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Model que representa um agendamento de envio de comunicação
+ * Model que representa uma solicitação de agendamento de envio de comunicação
  * 
  * @author Fernando Separovic
  *
  */
 @Valid
-public class Agendamento {
+public class SolicitacaoAgendamento {
 
 	@NotEmpty
 	@Valid

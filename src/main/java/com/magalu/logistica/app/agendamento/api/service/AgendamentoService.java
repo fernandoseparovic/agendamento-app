@@ -19,7 +19,7 @@ import com.magalu.logistica.app.agendamento.api.domain.PessoaCanalComunicacaoId;
 import com.magalu.logistica.app.agendamento.api.domain.StatusComunicacao;
 import com.magalu.logistica.app.agendamento.api.enuns.StatusComunicacaoEnum;
 import com.magalu.logistica.app.agendamento.api.exception.BusinessException;
-import com.magalu.logistica.app.agendamento.api.model.Agendamento;
+import com.magalu.logistica.app.agendamento.api.model.SolicitacaoAgendamento;
 import com.magalu.logistica.app.agendamento.api.model.Destinatario;
 import com.magalu.logistica.app.agendamento.api.repository.AgendamentoRepository;
 import com.magalu.logistica.app.agendamento.api.repository.DestinatarioComunicacaoRepository;
@@ -41,19 +41,20 @@ public class AgendamentoService {
 	/**
 	 * Agenda um envio de comunicação
 	 * 
-	 * @param agendamento Agendamento de comunicação com seus respectivos destinatarios e canais
+	 * @param solicitacaoAgendamento Agendamento de comunicação com seus respectivos destinatarios e canais
 	 * @return agendamento persistido no banco
 	 * @throws BusinessException Caso os ids de pessoa canal informados não forem encontrados no banco
 	 */
-	public Agendamento agendarEnvio(final Agendamento agendamento) throws BusinessException {
+	public SolicitacaoAgendamento agendarEnvio(final SolicitacaoAgendamento solicitacaoAgendamento) 
+			throws BusinessException {
 		
 		// Verifica se existem as pessoas com seus respectivos canais de comunicação para envio
-		verificarExistenciaPessoaCanalComunicacao(agendamento.getDestinatarios());
+		verificarExistenciaPessoaCanalComunicacao(solicitacaoAgendamento.getDestinatarios());
 		
 		// Persiste no banco o agendamento e seus respectivos destinatarios comunicação
-		persistirAgendamentoDestinatarios(agendamento);
+		persistirAgendamentoDestinatarios(solicitacaoAgendamento);
 
-		return agendamento;
+		return solicitacaoAgendamento;
 	}
 
 	/**
@@ -76,17 +77,17 @@ public class AgendamentoService {
 	/**
 	 * Persiste nas tabelas logistica.agendamento e logistica.destinatario_comunicacao
 	 * 
-	 * @param agendamento Agendamento de comunicação com seus respectivos destinatarios e canais
+	 * @param solicitacaoAgendamento Agendamento de comunicação com seus respectivos destinatarios e canais
 	 */
 	@Transactional
-	private void persistirAgendamentoDestinatarios(final Agendamento agendamento) {
+	private void persistirAgendamentoDestinatarios(final SolicitacaoAgendamento solicitacaoAgendamento) {
 		
 		// Transforma o agendamento do request no objeto para persistir no banco
 		final com.magalu.logistica.app.agendamento.api.domain.Agendamento agendamentoDomain = 
 				new com.magalu.logistica.app.agendamento.api.domain.Agendamento();
-		agendamentoDomain.setMensagem(agendamento.getMensagem());
+		agendamentoDomain.setMensagem(solicitacaoAgendamento.getMensagem());
 		agendamentoDomain.setDataHoraCriacao(new Date());
-		agendamentoDomain.setDataHoraParaEnvio(agendamento.getDataHoraParaEnvio());		
+		agendamentoDomain.setDataHoraParaEnvio(solicitacaoAgendamento.getDataHoraParaEnvio());		
 
 		// Persiste na tabela logistica.agendamento 
 		final com.magalu.logistica.app.agendamento.api.domain.Agendamento agendamentoDomainPersistido = 
@@ -98,7 +99,7 @@ public class AgendamentoService {
 		statusComunicacao.setIdStatusComunicacao(StatusComunicacaoEnum.AGUARDANDO_ENVIO.getCodigoStatus());
 		
 		final Set<DestinatarioComunicacao> setDestinatarioComunicacao = new HashSet<>();
-		agendamento.getDestinatarios().forEach(destinatario -> {
+		solicitacaoAgendamento.getDestinatarios().forEach(destinatario -> {
 			final DestinatarioComunicacao destinatarioComunicacao = new DestinatarioComunicacao();
 			destinatarioComunicacao.setId(new DestinatarioComunicacaoId());
 			destinatarioComunicacao.getId().setIdAgendamento(agendamentoDomainPersistido.getIdAgendamento());

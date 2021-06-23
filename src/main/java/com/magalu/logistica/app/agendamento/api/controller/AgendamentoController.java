@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.magalu.logistica.app.agendamento.api.enuns.CanalComunicacaoEnum;
 import com.magalu.logistica.app.agendamento.api.exception.BusinessException;
-import com.magalu.logistica.app.agendamento.api.model.Agendamento;
+import com.magalu.logistica.app.agendamento.api.model.SolicitacaoAgendamento;
 import com.magalu.logistica.app.agendamento.api.model.AgendamentoPaginado;
 import com.magalu.logistica.app.agendamento.api.service.AgendamentoService;
 
@@ -54,14 +54,14 @@ public class AgendamentoController {
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Agendamento realizado com sucesso", content = {
 					@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
-							 schema = @Schema(implementation = Agendamento.class)) }),
+							 schema = @Schema(implementation = SolicitacaoAgendamento.class)) }),
 			@ApiResponse(responseCode = "400", description = "Parâmetros invalidos", content = @Content),
 			@ApiResponse(responseCode = "500", description = "Erro interno", content = @Content) })
 	@PutMapping
-	public ResponseEntity<Agendamento> agendarEnvio(@Valid @RequestBody final Agendamento agendamento) 
+	public ResponseEntity<SolicitacaoAgendamento> agendarEnvio(@Valid @RequestBody final SolicitacaoAgendamento solicitacaoAgendamento) 
 			throws BusinessException {
 
-		return new ResponseEntity<>(agendamentoService.agendarEnvio(agendamento), HttpStatus.OK);
+		return new ResponseEntity<>(agendamentoService.agendarEnvio(solicitacaoAgendamento), HttpStatus.OK);
 	}
 	
 	
@@ -90,7 +90,7 @@ public class AgendamentoController {
 			@ApiResponse(responseCode = "400", description = "Parâmetros invalidos", content = @Content),
 			@ApiResponse(responseCode = "500", description = "Erro interno", content = @Content) })
 	@DeleteMapping("/{idAgendamento}")
-	public ResponseEntity<Agendamento> deletarAgendamento(@PathVariable @NotNull final Integer idAgendamento) 
+	public ResponseEntity<SolicitacaoAgendamento> deletarAgendamento(@PathVariable @NotNull final Integer idAgendamento) 
 			throws BusinessException {
 
 		agendamentoService.deletarAgendamento(idAgendamento);
