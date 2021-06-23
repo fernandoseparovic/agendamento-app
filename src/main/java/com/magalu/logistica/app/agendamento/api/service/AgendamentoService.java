@@ -82,22 +82,24 @@ public class AgendamentoService {
 	@Transactional
 	private void persistirAgendamentoDestinatarios(final SolicitacaoAgendamento solicitacaoAgendamento) {
 		
+		// Inicia o status do agendamento com Aguardando envio
+		final StatusComunicacao statusComunicacao = new StatusComunicacao();
+		statusComunicacao.setIdStatusComunicacao(StatusComunicacaoEnum.AGUARDANDO_ENVIO.getCodigoStatus());
+
 		// Transforma o agendamento do request no objeto para persistir no banco
 		final com.magalu.logistica.app.agendamento.api.domain.Agendamento agendamentoDomain = 
 				new com.magalu.logistica.app.agendamento.api.domain.Agendamento();
 		agendamentoDomain.setMensagem(solicitacaoAgendamento.getMensagem());
 		agendamentoDomain.setDataHoraCriacao(new Date());
-		agendamentoDomain.setDataHoraParaEnvio(solicitacaoAgendamento.getDataHoraParaEnvio());		
+		agendamentoDomain.setDataHoraParaEnvio(solicitacaoAgendamento.getDataHoraParaEnvio());
+		agendamentoDomain.setStatusComunicacao(statusComunicacao);
 
 		// Persiste na tabela logistica.agendamento 
 		final com.magalu.logistica.app.agendamento.api.domain.Agendamento agendamentoDomainPersistido = 
 				agendamentoRepository.save(agendamentoDomain);
 
 
-		// Transforma o Destinatario comunicação do resquest no objeto para persistir no banco
-		final StatusComunicacao statusComunicacao = new StatusComunicacao();
-		statusComunicacao.setIdStatusComunicacao(StatusComunicacaoEnum.AGUARDANDO_ENVIO.getCodigoStatus());
-		
+		// Transforma o Destinatario comunicação do resquest no objeto para persistir no banco		
 		final Set<DestinatarioComunicacao> setDestinatarioComunicacao = new HashSet<>();
 		solicitacaoAgendamento.getDestinatarios().forEach(destinatario -> {
 			final DestinatarioComunicacao destinatarioComunicacao = new DestinatarioComunicacao();

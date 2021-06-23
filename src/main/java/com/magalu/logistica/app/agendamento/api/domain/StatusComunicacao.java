@@ -1,5 +1,5 @@
 package com.magalu.logistica.app.agendamento.api.domain;
-// Generated 20 de jun de 2021 16:08:19 by Hibernate Tools 5.2.12.Final
+// Generated 22 de jun de 2021 21:43:42 by Hibernate Tools 5.2.12.Final
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +24,7 @@ public class StatusComunicacao implements java.io.Serializable {
 	private int idStatusComunicacao;
 	private String descricaoStatusAgendamento;
 	private Set<DestinatarioComunicacao> destinatarioComunicacaos = new HashSet<>(0);
+	private Set<Agendamento> agendamentos = new HashSet<>(0);
 
 	public StatusComunicacao() {
 	}
@@ -67,6 +68,15 @@ public class StatusComunicacao implements java.io.Serializable {
 
 	public void setDestinatarioComunicacaos(Set<DestinatarioComunicacao> destinatarioComunicacaos) {
 		this.destinatarioComunicacaos = destinatarioComunicacaos;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "statusComunicacao")
+	public Set<Agendamento> getAgendamentos() {
+		return this.agendamentos;
+	}
+
+	public void setAgendamentos(Set<Agendamento> agendamentos) {
+		this.agendamentos = agendamentos;
 	}
 
 }

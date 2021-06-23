@@ -1,5 +1,6 @@
 package com.magalu.logistica.app.agendamento.api.domain;
-// Generated 20 de jun de 2021 16:08:19 by Hibernate Tools 5.2.12.Final
+// Generated 22 de jun de 2021 21:43:42 by Hibernate Tools 5.2.12.Final
+
 
 import java.util.Date;
 import java.util.HashSet;
@@ -11,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -28,6 +31,7 @@ public class Agendamento implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Integer idAgendamento;
+	private StatusComunicacao statusComunicacao;
 	private String mensagem;
 	private Date dataHoraCriacao;
 	private Date dataHoraParaEnvio;
@@ -36,14 +40,18 @@ public class Agendamento implements java.io.Serializable {
 	public Agendamento() {
 	}
 
-	public Agendamento(String mensagem, Date dataHoraCriacao, Date dataHoraParaEnvio) {
+
+	public Agendamento(StatusComunicacao statusComunicacao, String mensagem, Date dataHoraCriacao,
+			Date dataHoraParaEnvio) {
+		this.statusComunicacao = statusComunicacao;
 		this.mensagem = mensagem;
 		this.dataHoraCriacao = dataHoraCriacao;
 		this.dataHoraParaEnvio = dataHoraParaEnvio;
 	}
 
-	public Agendamento(String mensagem, Date dataHoraCriacao, Date dataHoraParaEnvio,
-			Set<DestinatarioComunicacao> destinatarioComunicacaos) {
+	public Agendamento(StatusComunicacao statusComunicacao, String mensagem, Date dataHoraCriacao,
+			Date dataHoraParaEnvio, Set<DestinatarioComunicacao> destinatarioComunicacaos) {
+		this.statusComunicacao = statusComunicacao;
 		this.mensagem = mensagem;
 		this.dataHoraCriacao = dataHoraCriacao;
 		this.dataHoraParaEnvio = dataHoraParaEnvio;
@@ -61,6 +69,17 @@ public class Agendamento implements java.io.Serializable {
 	public void setIdAgendamento(Integer idAgendamento) {
 		this.idAgendamento = idAgendamento;
 	}
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_status_comunicacao", nullable = false)
+	public StatusComunicacao getStatusComunicacao() {
+		return this.statusComunicacao;
+	}
+
+	public void setStatusComunicacao(StatusComunicacao statusComunicacao) {
+		this.statusComunicacao = statusComunicacao;
+	}
+
 
 	@Column(name = "mensagem", nullable = false, length = 300)
 	public String getMensagem() {
