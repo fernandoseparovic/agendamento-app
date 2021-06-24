@@ -11,7 +11,7 @@ import java.util.Set;
 public class AgendamentoPaginado {
 
 	private Page page;
-	private Set<SolicitacaoAgendamento> agendamentos;
+	private Set<Agendamento> agendamentos;
 
 
 	/**
@@ -27,19 +27,34 @@ public class AgendamentoPaginado {
 	public void setPage(final Page page) {
 		this.page = page;
 	}
+	
+	/**
+	 * @param page the page to set
+	 */
+	public AgendamentoPaginado page(final Page page) {
+		this.page = page;
+		return this;
+	}
 
 	/**
 	 * @return the agendamentos
 	 */
-	public Set<SolicitacaoAgendamento> getAgendamentos() {
+	public Set<Agendamento> getAgendamentos() {
 		return agendamentos;
 	}
 
 	/**
 	 * @param agendamentos the agendamentos to set
 	 */
-	public void setAgendamentos(final Set<SolicitacaoAgendamento> agendamentos) {
+	public void setAgendamentos(final Set<Agendamento> agendamentos) {
 		this.agendamentos = agendamentos;
 	}
-
+	
+	/**
+	 * @param agendamentos the agendamentos to set
+	 */
+	public AgendamentoPaginado agendamentos(final Set<Agendamento> agendamentos) {
+		this.agendamentos = agendamentos;
+		return this;
+	}
 }

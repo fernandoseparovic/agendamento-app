@@ -10,6 +10,7 @@ import java.util.stream.StreamSupport;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.magalu.logistica.app.agendamento.api.domain.DestinatarioComunicacao;
@@ -19,11 +20,17 @@ import com.magalu.logistica.app.agendamento.api.domain.PessoaCanalComunicacaoId;
 import com.magalu.logistica.app.agendamento.api.domain.StatusComunicacao;
 import com.magalu.logistica.app.agendamento.api.enuns.StatusComunicacaoEnum;
 import com.magalu.logistica.app.agendamento.api.exception.BusinessException;
-import com.magalu.logistica.app.agendamento.api.model.SolicitacaoAgendamento;
+import com.magalu.logistica.app.agendamento.api.model.Agendamento;
+import com.magalu.logistica.app.agendamento.api.model.AgendamentoPaginado;
+import com.magalu.logistica.app.agendamento.api.model.ConsultaAgendamento;
 import com.magalu.logistica.app.agendamento.api.model.Destinatario;
+import com.magalu.logistica.app.agendamento.api.model.Page;
+import com.magalu.logistica.app.agendamento.api.model.SolicitacaoAgendamento;
 import com.magalu.logistica.app.agendamento.api.repository.AgendamentoRepository;
 import com.magalu.logistica.app.agendamento.api.repository.DestinatarioComunicacaoRepository;
 import com.magalu.logistica.app.agendamento.api.repository.PessoaCanalComunicacaoRepository;
+import com.magalu.logistica.app.agendamento.api.utils.DateUtils;
+import com.magalu.logistica.app.agendamento.api.utils.Utils;
 
 @Service
 public class AgendamentoService {
@@ -71,6 +78,54 @@ public class AgendamentoService {
 
 		// Deleta no banco o agendametno e seus respectivos destinatarios comunicações
 		deletarAgendamentoDestinatarios(idAgendamento);
+	}
+
+	/**
+	 * Busca paginada de agendamentos conforme parametros passados na entrada
+	 * 
+	 * @param consultaAgendamento filtro para consulta paginada de agendamentos
+	 * @return {@link AgendamentoPaginado}
+	 */
+	public AgendamentoPaginado buscarAgendamento(final ConsultaAgendamento consultaAgendamento) {
+		
+		// Monta o objeto utilizado na query para paginação
+		final PageRequest pageRequest = Utils.montarPageRequest(consultaAgendamento.getPage(), 
+																consultaAgendamento.getPerPage());
+		
+		
+		// Retorna do banco os agendamentos paginados
+		final org.springframework.data.domain.Page<com.magalu.logistica.app.agendamento.api.domain.Agendamento> 
+			agendamentoPaginadoDomain = 
+				agendamentoRepository.buscarAgendamento(consultaAgendamento.getIdAgendamento(),
+														consultaAgendamento.getMensagem(), 
+														DateUtils.toDateInicioDia(consultaAgendamento.getDataCriacao()),
+														DateUtils.toDateFinalDia(consultaAgendamento.getDataCriacao()),
+														DateUtils.toDateInicioDia(consultaAgendamento.getDataParaEnvio()),
+													    DateUtils.toDateFinalDia(consultaAgendamento.getDataParaEnvio()),
+														pageRequest);
+		
+		// Transforma os agendamentos paginados do banco nos agendamentos paginados que é retornado pelo controller
+		final AgendamentoPaginado agendamentoPaginadoModel = new AgendamentoPaginado();
+		agendamentoPaginadoModel.setPage(
+				new Page().page(agendamentoPaginadoDomain.getNumber() + 1)
+						  .perPage(agendamentoPaginadoDomain.getSize())
+						  .totalPages(agendamentoPaginadoDomain.getTotalPages())
+						  .totalElements(agendamentoPaginadoDomain.getTotalElements()));
+		
+		agendamentoPaginadoModel.setAgendamentos(
+				agendamentoPaginadoDomain.getContent()
+							   .stream()
+							   .map(entity -> 
+							   		new Agendamento().idAgendamento(entity.getIdAgendamento())
+													 .mensagem(entity.getMensagem())
+													 .dataHoraCriacao(entity.getDataHoraCriacao())
+													 .dataHoraParaEnvio(entity.getDataHoraParaEnvio())
+							   						 .statusComunicacaoEnum(
+							   								 StatusComunicacaoEnum.getStatusComunicacaoEnum(
+							   										 entity.getStatusComunicacao().getIdStatusComunicacao())))
+							   .collect(Collectors.toSet()));
+
+		return agendamentoPaginadoModel;
 	}
 
 

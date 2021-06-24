@@ -11,7 +11,7 @@ public class Page {
 	private Integer page;
 	private Integer perPage;
 	private Integer totalPages;
-	private Integer totalElements;
+	private Long totalElements;
 
 	/**
 	 * @return the page
@@ -25,6 +25,14 @@ public class Page {
 	 */
 	public void setPage(final Integer page) {
 		this.page = page;
+	}
+	
+	/**
+	 * @param page the page to set
+	 */
+	public Page page(final Integer page) {
+		this.page = page;
+		return this;
 	}
 
 	/**
@@ -40,6 +48,14 @@ public class Page {
 	public void setPerPage(final Integer perPage) {
 		this.perPage = perPage;
 	}
+	
+	/**
+	 * @param perPage the perPage to set
+	 */
+	public Page perPage(final Integer perPage) {
+		this.perPage = perPage;
+		return this;
+	}
 
 	/**
 	 * @return the totalPages
@@ -54,18 +70,34 @@ public class Page {
 	public void setTotalPages(final Integer totalPages) {
 		this.totalPages = totalPages;
 	}
+	
+	/**
+	 * @param totalPages the totalPages to set
+	 */
+	public Page totalPages(final Integer totalPages) {
+		this.totalPages = totalPages;
+		return this;
+	}
 
 	/**
 	 * @return the totalElements
 	 */
-	public Integer getTotalElements() {
+	public Long getTotalElements() {
 		return totalElements;
 	}
 
 	/**
 	 * @param totalElements the totalElements to set
 	 */
-	public void setTotalElements(final Integer totalElements) {
+	public void setTotalElements(final Long totalElements) {
 		this.totalElements = totalElements;
+	}
+	
+	/**
+	 * @param totalElements the totalElements to set
+	 */
+	public Page totalElements(final Long totalElements) {
+		this.totalElements = totalElements;
+		return this;
 	}
 }
