@@ -1,5 +1,7 @@
 package com.magalu.logistica.app.agendamento.api.model;
 
+import java.util.Objects;
+
 /**
  * Contem os atributos de uma paginação
  * 
@@ -99,5 +101,32 @@ public class Page {
 	public Page totalElements(final Long totalElements) {
 		this.totalElements = totalElements;
 		return this;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(page, perPage, totalElements, totalPages);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		Page other = (Page) obj;
+		return Objects.equals(page, other.page) && Objects.equals(perPage, other.perPage)
+				&& Objects.equals(totalElements, other.totalElements) && Objects.equals(totalPages, other.totalPages);
+	}
+
+	@Override
+	public String toString() {
+		return "Page [page=" + page + ", perPage=" + perPage + ", totalPages=" + totalPages + ", totalElements="
+				+ totalElements + "]";
 	}
 }
