@@ -1,0 +1,14 @@
+{
+    "destinatarios": [
+        {
+            "idPessoaDestinatario": 1,
+            "canalComunicacao": "SMS"
+        },
+        {
+            "idPessoaDestinatario": 1,
+            "canalComunicacao": "EMAIL"
+        }
+    ],
+    "mensagem": "ad et consequat do",
+    "dataHoraParaEnvio": "1975-05-05T15:14:17.139+00:00"
+}

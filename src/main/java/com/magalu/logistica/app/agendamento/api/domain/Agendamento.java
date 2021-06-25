@@ -59,7 +59,7 @@ public class Agendamento implements java.io.Serializable {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
 	@Column(name = "id_agendamento", unique = true, nullable = false)
 	public Integer getIdAgendamento() {

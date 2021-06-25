@@ -3,16 +3,9 @@
         "page": 1,
         "perPage": 100,
         "totalPages": 1,
-        "totalElements": 2
+        "totalElements": 1
     },
     "agendamentos": [
-        {
-            "idAgendamento": 1,
-            "mensagem": "mensagem teste1",
-            "dataHoraCriacao": "2021-06-19T15:00:00.000+00:00",
-            "dataHoraParaEnvio": "2021-06-20T15:00:00.000+00:00",
-            "statusComunicacao": "AGUARDANDO_ENVIO"
-        },
         {
             "idAgendamento": 2,
             "mensagem": "mensagem teste2",

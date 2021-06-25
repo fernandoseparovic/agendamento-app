@@ -1,6 +1,7 @@
 package com.magalu.logistica.app.agendamento.api.model;
 
 import java.util.Date;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.validation.Valid;
@@ -27,7 +28,7 @@ public class SolicitacaoAgendamento {
 	private String mensagem;
 	
 	@NotNull
-	private Date dataHoraParaEnvio; // TODO verificar melhor tipo para data
+	private Date dataHoraParaEnvio;
 
 
 	/**
@@ -71,6 +72,32 @@ public class SolicitacaoAgendamento {
 	public void setDataHoraParaEnvio(final Date dataHoraParaEnvio) {
 		this.dataHoraParaEnvio = dataHoraParaEnvio;
 	}
-	
-	
+
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(dataHoraParaEnvio, destinatarios, mensagem);
+	}
+
+	@Override
+	public boolean equals(final Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		SolicitacaoAgendamento other = (SolicitacaoAgendamento) obj;
+		return Objects.equals(dataHoraParaEnvio, other.dataHoraParaEnvio)
+				&& Objects.equals(destinatarios, other.destinatarios) && Objects.equals(mensagem, other.mensagem);
+	}
+
+	@Override
+	public String toString() {
+		return "SolicitacaoAgendamento [destinatarios=" + destinatarios + ", mensagem=" + mensagem
+				+ ", dataHoraParaEnvio=" + dataHoraParaEnvio + "]";
+	}
 }

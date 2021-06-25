@@ -1,0 +1,38 @@
+{
+    "page": {
+        "page": 1,
+        "perPage": 100,
+        "totalPages": 1,
+        "totalElements": 4
+    },
+    "agendamentos": [
+        {
+            "idAgendamento": 1,
+            "mensagem": "mensagem teste1",
+            "dataHoraCriacao": "2021-06-19T15:00:00.000+00:00",
+            "dataHoraParaEnvio": "2021-06-20T15:00:00.000+00:00",
+            "statusComunicacao": "AGUARDANDO_ENVIO"
+        },
+        {
+            "idAgendamento": 2,
+            "mensagem": "mensagem teste2",
+            "dataHoraCriacao": "2021-07-19T15:00:00.000+00:00",
+            "dataHoraParaEnvio": "2021-07-20T15:00:00.000+00:00",
+            "statusComunicacao": "AGUARDANDO_ENVIO"
+        },
+        {
+            "idAgendamento": 3,
+            "mensagem": "mensagem teste3",
+            "dataHoraCriacao": "2021-08-19T15:00:00.000+00:00",
+            "dataHoraParaEnvio": "2021-08-20T15:00:00.000+00:00",
+            "statusComunicacao": "AGUARDANDO_ENVIO"
+        },
+        {
+            "idAgendamento": 4,
+            "mensagem": "mensagem teste4",
+            "dataHoraCriacao": "2021-09-19T15:00:00.000+00:00",
+            "dataHoraParaEnvio": "2021-10-20T15:00:00.000+00:00",
+            "statusComunicacao": "AGUARDANDO_ENVIO"
+        }
+    ]
+}

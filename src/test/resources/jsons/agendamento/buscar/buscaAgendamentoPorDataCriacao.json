@@ -1,0 +1,17 @@
+{
+    "page": {
+        "page": 1,
+        "perPage": 100,
+        "totalPages": 1,
+        "totalElements": 1
+    },
+    "agendamentos": [
+        {
+            "idAgendamento": 3,
+            "mensagem": "mensagem teste3",
+            "dataHoraCriacao": "2021-08-19T15:00:00.000+00:00",
+            "dataHoraParaEnvio": "2021-08-20T15:00:00.000+00:00",
+            "statusComunicacao": "AGUARDANDO_ENVIO"
+        }
+    ]
+}

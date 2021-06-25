@@ -38,6 +38,10 @@ insert into logistica.agendamento (mensagem, data_hora_criacao, data_hora_para_e
 	values ('mensagem teste1', '2021-06-19 12:00:00' , '2021-06-20 12:00:00', 1);
 insert into logistica.agendamento (mensagem, data_hora_criacao, data_hora_para_envio, id_status_comunicacao)  
 	values ('mensagem teste2', '2021-07-19 12:00:00' , '2021-07-20 12:00:00', 1);
+insert into logistica.agendamento (mensagem, data_hora_criacao, data_hora_para_envio, id_status_comunicacao) 
+	values ('mensagem teste3', '2021-08-19 12:00:00' , '2021-08-20 12:00:00', 1);
+insert into logistica.agendamento (mensagem, data_hora_criacao, data_hora_para_envio, id_status_comunicacao)  
+	values ('mensagem teste4', '2021-09-19 12:00:00' , '2021-10-20 12:00:00', 1);
 
 
 -- destinatario comunicacao
@@ -57,4 +61,12 @@ insert into logistica.destinatario_comunicacao (id_agendamento, id_pessoa_destin
 -- agendamento 2 (mensagem teste2), destinatario 1 (Fernando Separovic), canal 2 (Sms), status 1 (Aguardando envio)
 insert into logistica.destinatario_comunicacao (id_agendamento, id_pessoa_destinatario, id_canal_comunicacao, id_status_comunicacao)
 	values (2, 1, 2, 1);
+	
+-- agendamento 3 (mensagem teste3), destinatario 1 (Fernando Separovic), canal 2 (Sms), status 1 (Aguardando envio)
+insert into logistica.destinatario_comunicacao (id_agendamento, id_pessoa_destinatario, id_canal_comunicacao, id_status_comunicacao)
+	values (3, 1, 2, 1);
+	
+-- agendamento 4 (mensagem teste4), destinatario 1 (Fernando Separovic), canal 2 (Sms), status 1 (Aguardando envio)
+insert into logistica.destinatario_comunicacao (id_agendamento, id_pessoa_destinatario, id_canal_comunicacao, id_status_comunicacao)
+	values (4, 1, 2, 1);
 

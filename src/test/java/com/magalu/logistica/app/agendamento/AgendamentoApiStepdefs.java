@@ -8,12 +8,15 @@ import java.net.URI;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.magalu.logistica.app.agendamento.api.model.AgendamentoPaginado;
+import com.magalu.logistica.app.agendamento.api.model.SolicitacaoAgendamento;
 import com.magalu.logistica.app.config.AbstractTeste;
 import com.magalu.logistica.app.utils.ArquivosUtil;
 
@@ -27,7 +30,8 @@ public class AgendamentoApiStepdefs extends AbstractTeste implements En {
 	
 	private ResponseEntity<?> responseEntity;
 
-	private static final String PATH_RESULTADO_OBJETOCOMPARACAO = "src/test/resources/jsons/agendamento/";
+	private static final String PATH_BUSCAR_AGENDAMENTO = "src/test/resources/jsons/agendamento/buscar/";
+	private static final String PATH_AGENDAR_ENVIO = "src/test/resources/jsons/agendamento/agendarEnvio/";
 
 
 	public AgendamentoApiStepdefs() {
@@ -74,6 +78,16 @@ public class AgendamentoApiStepdefs extends AbstractTeste implements En {
 		});
 
 
+		When("client calls PUT agendamento with {string}", (String nomeArquivoInserirAgendamento) -> {
+			final SolicitacaoAgendamento solicitacaoAgendamento = ArquivosUtil.carregaJson(
+					PATH_AGENDAR_ENVIO + nomeArquivoInserirAgendamento, SolicitacaoAgendamento.class);
+
+			final UriComponentsBuilder builder = UriComponentsBuilder.fromUri(new URI("/v1/agendamento"));
+			final HttpEntity<SolicitacaoAgendamento> httpEntity = new HttpEntity<SolicitacaoAgendamento>(solicitacaoAgendamento);
+			responseEntity = template.exchange(builder.build().toUri(), HttpMethod.PUT, httpEntity, SolicitacaoAgendamento.class);
+		});
+
+
 		Then("client of agendamento receives status code of {int}", (Integer statusCode) -> {
 			if (statusCode == null || responseEntity == null) {
 				fail();
@@ -84,13 +98,24 @@ public class AgendamentoApiStepdefs extends AbstractTeste implements En {
 		});
 
 
-		Then("client of agendamento receives body of {string}", (String nomeArquivoResultado) -> {
+		Then("client of GET agendamento receives body of {string}", (String nomeArquivoResultado) -> {
 			final AgendamentoPaginado agendamentoPaginadoEsperado = ArquivosUtil.carregaJson(
-					PATH_RESULTADO_OBJETOCOMPARACAO + nomeArquivoResultado, AgendamentoPaginado.class);
+					PATH_BUSCAR_AGENDAMENTO + nomeArquivoResultado, AgendamentoPaginado.class);
 
 			final AgendamentoPaginado agendamentoPaginadoResponse = (AgendamentoPaginado) responseEntity.getBody();
 
 			assertEquals("Body diferente do esperado: ", agendamentoPaginadoEsperado, agendamentoPaginadoResponse);
 		});
+
+
+		Then("client of PUT agendamento receives body of {string}", (String nomeArquivoResultado) -> {
+			final SolicitacaoAgendamento solicitacaoAgendamentoEsperado = ArquivosUtil.carregaJson(
+					PATH_AGENDAR_ENVIO + nomeArquivoResultado, SolicitacaoAgendamento.class);
+
+			final SolicitacaoAgendamento solicitacaoAgendamentoResponse = (SolicitacaoAgendamento) responseEntity.getBody();
+
+			assertEquals("Body diferente do esperado: ", solicitacaoAgendamentoEsperado, solicitacaoAgendamentoResponse);
+		});
 	}
+
 }

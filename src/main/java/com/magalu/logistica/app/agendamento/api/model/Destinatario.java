@@ -76,7 +76,5 @@ public class Destinatario {
 		return "Destinatario [idPessoaDestinatario=" + idPessoaDestinatario + ", canalComunicacao=" + canalComunicacao
 				+ "]";
 	}
-	
-	
 
 }
