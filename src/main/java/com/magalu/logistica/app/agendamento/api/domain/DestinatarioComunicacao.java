@@ -2,13 +2,11 @@ package com.magalu.logistica.app.agendamento.api.domain;
 // Generated 20 de jun de 2021 16:08:19 by Hibernate Tools 5.2.12.Final
 
 import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -40,11 +38,9 @@ public class DestinatarioComunicacao implements java.io.Serializable {
 	}
 
 	@EmbeddedId
-
-	@AttributeOverrides({
-			@AttributeOverride(name = "idAgendamento", column = @Column(name = "id_agendamento", nullable = false)),
-			@AttributeOverride(name = "idPessoaDestinatario", column = @Column(name = "id_pessoa_destinatario", nullable = false)),
-			@AttributeOverride(name = "idCanalComunicacao", column = @Column(name = "id_canal_comunicacao", nullable = false)) })
+	@AttributeOverride(name = "idAgendamento", column = @Column(name = "id_agendamento", nullable = false))
+	@AttributeOverride(name = "idPessoaDestinatario", column = @Column(name = "id_pessoa_destinatario", nullable = false))
+	@AttributeOverride(name = "idCanalComunicacao", column = @Column(name = "id_canal_comunicacao", nullable = false))
 	public DestinatarioComunicacaoId getId() {
 		return this.id;
 	}
@@ -64,10 +60,8 @@ public class DestinatarioComunicacao implements java.io.Serializable {
 	}
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumns({
-		@JoinColumn(name = "id_canal_comunicacao", nullable = false, insertable = false, updatable = false),
-		@JoinColumn(name = "id_pessoa_destinatario", nullable = false, insertable = false, updatable = false)
-	})
+	@JoinColumn(name = "id_canal_comunicacao", nullable = false, insertable = false, updatable = false)
+	@JoinColumn(name = "id_pessoa_destinatario", nullable = false, insertable = false, updatable = false)
 	public PessoaCanalComunicacao getPessoaCanalComunicacao() {
 		return pessoaCanalComunicacao;
 	}

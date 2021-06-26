@@ -3,8 +3,8 @@ package com.magalu.logistica.app.agendamento.api.domain;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -40,10 +40,8 @@ public class PessoaCanalComunicacao implements java.io.Serializable {
 	}
 
 	@EmbeddedId
-
-	@AttributeOverrides({
-			@AttributeOverride(name = "idCanalComunicacao", column = @Column(name = "id_canal_comunicacao", nullable = false)),
-			@AttributeOverride(name = "idPessoa", column = @Column(name = "id_pessoa", nullable = false)) })
+	@AttributeOverride(name = "idCanalComunicacao", column = @Column(name = "id_canal_comunicacao", nullable = false))
+	@AttributeOverride(name = "idPessoa", column = @Column(name = "id_pessoa", nullable = false))
 	public PessoaCanalComunicacaoId getId() {
 		return this.id;
 	}
