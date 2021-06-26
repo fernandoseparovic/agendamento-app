@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -32,6 +33,7 @@ public class AgendamentoApiStepdefs extends AbstractTeste implements En {
 
 	private static final String PATH_BUSCAR_AGENDAMENTO = "src/test/resources/jsons/agendamento/buscar/";
 	private static final String PATH_AGENDAR_ENVIO = "src/test/resources/jsons/agendamento/agendarEnvio/";
+	private static final String PATH_DELETAR_ENVIO = "src/test/resources/jsons/agendamento/deletarEnvio/";
 
 
 	public AgendamentoApiStepdefs() {
@@ -78,13 +80,27 @@ public class AgendamentoApiStepdefs extends AbstractTeste implements En {
 		});
 
 
-		When("client calls PUT agendamento with {string}", (String nomeArquivoInserirAgendamento) -> {
+		When("client calls PUT agendamento with {string}, {int}", (String nomeArquivoInserirAgendamento, 
+																   Integer statusCode) -> {
 			final SolicitacaoAgendamento solicitacaoAgendamento = ArquivosUtil.carregaJson(
 					PATH_AGENDAR_ENVIO + nomeArquivoInserirAgendamento, SolicitacaoAgendamento.class);
 
 			final UriComponentsBuilder builder = UriComponentsBuilder.fromUri(new URI("/v1/agendamento"));
 			final HttpEntity<SolicitacaoAgendamento> httpEntity = new HttpEntity<SolicitacaoAgendamento>(solicitacaoAgendamento);
-			responseEntity = template.exchange(builder.build().toUri(), HttpMethod.PUT, httpEntity, SolicitacaoAgendamento.class);
+			if (statusCode == HttpStatus.OK.value()) {
+				responseEntity = template.exchange(builder.build().toUri(), HttpMethod.PUT, httpEntity, SolicitacaoAgendamento.class);
+			} else if(statusCode == HttpStatus.BAD_REQUEST.value()) {
+				responseEntity = template.exchange(builder.build().toUri(), HttpMethod.PUT, httpEntity, Object.class);
+			}
+		});
+
+
+		When("client calls DELETE agendamento with {string}", (String idAgendamento) -> {
+			final UriComponentsBuilder builder = UriComponentsBuilder
+					.fromUri(new URI("/v1/agendamento/"))
+					.path(idAgendamento);
+			
+			responseEntity = template.exchange(builder.build().toUri(), HttpMethod.DELETE, null, Object.class);
 		});
 
 
@@ -99,23 +115,32 @@ public class AgendamentoApiStepdefs extends AbstractTeste implements En {
 
 
 		Then("client of GET agendamento receives body of {string}", (String nomeArquivoResultado) -> {
-			final AgendamentoPaginado agendamentoPaginadoEsperado = ArquivosUtil.carregaJson(
-					PATH_BUSCAR_AGENDAMENTO + nomeArquivoResultado, AgendamentoPaginado.class);
-
-			final AgendamentoPaginado agendamentoPaginadoResponse = (AgendamentoPaginado) responseEntity.getBody();
-
-			assertEquals("Body diferente do esperado: ", agendamentoPaginadoEsperado, agendamentoPaginadoResponse);
+			verificarRetorno(PATH_BUSCAR_AGENDAMENTO, nomeArquivoResultado, AgendamentoPaginado.class);
 		});
 
 
 		Then("client of PUT agendamento receives body of {string}", (String nomeArquivoResultado) -> {
-			final SolicitacaoAgendamento solicitacaoAgendamentoEsperado = ArquivosUtil.carregaJson(
-					PATH_AGENDAR_ENVIO + nomeArquivoResultado, SolicitacaoAgendamento.class);
-
-			final SolicitacaoAgendamento solicitacaoAgendamentoResponse = (SolicitacaoAgendamento) responseEntity.getBody();
-
-			assertEquals("Body diferente do esperado: ", solicitacaoAgendamentoEsperado, solicitacaoAgendamentoResponse);
+			if (responseEntity.getStatusCodeValue() == HttpStatus.OK.value()) {
+				verificarRetorno(PATH_AGENDAR_ENVIO, nomeArquivoResultado, SolicitacaoAgendamento.class);
+			} else if (responseEntity.getStatusCodeValue() == HttpStatus.BAD_REQUEST.value()) {
+				verificarRetorno(PATH_AGENDAR_ENVIO, nomeArquivoResultado, Object.class);
+			}
 		});
+
+
+		Then("client of DELETE agendamento receives body of {string}", (String nomeArquivoResultado) -> {
+			verificarRetorno(PATH_DELETAR_ENVIO, nomeArquivoResultado, Object.class);
+		});
+	}
+
+
+	private <T> void verificarRetorno(String pathArquivo, String nomeArquivoResultado, Class<T> classResultado) {
+		if (StringUtils.isNotBlank(pathArquivo) && StringUtils.isNotBlank(nomeArquivoResultado)) {
+			final T mensagemEsperada = ArquivosUtil.carregaJson(pathArquivo + nomeArquivoResultado, classResultado);
+			final T mensagemResponse = classResultado.cast(responseEntity.getBody());
+
+			assertEquals("Body diferente do esperado: ", mensagemEsperada, mensagemResponse);
+		}
 	}
 
 }
