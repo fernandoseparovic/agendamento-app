@@ -1,5 +1,7 @@
 package com.magalu.logistica.app.agendamento.api.facade;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ public class AgendamentoFacade {
 	@Autowired
 	private AgendamentoService agendamentoService;
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(AgendamentoFacade.class);
 
 	/**
 	 * Agenda um envio de comunicação
@@ -26,6 +29,10 @@ public class AgendamentoFacade {
 	public SolicitacaoAgendamento agendarEnvio(final SolicitacaoAgendamento solicitacaoAgendamento) 
 			throws BusinessException {
 		
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("agendarEnvio entrada: {}", solicitacaoAgendamento);
+		}
+
 		// Verifica se existem as pessoas com seus respectivos canais de comunicação para envio
 		agendamentoService.verificarExistenciaPessoaCanalComunicacao(solicitacaoAgendamento.getDestinatarios());
 		
@@ -45,6 +52,10 @@ public class AgendamentoFacade {
 	 */
 	public void deletarAgendamento(final Integer idAgendamento) throws BusinessException {
 		
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("deletarAgendamento entrada: {}", idAgendamento);
+		}
+
 		// Verifica se o agendamento informado existe
 		agendamentoService.verificarExistenciaAgendamento(idAgendamento);
 
@@ -61,6 +72,10 @@ public class AgendamentoFacade {
 	 */
 	public AgendamentoPaginado buscarAgendamento(final ConsultaAgendamento consultaAgendamento) {
 		
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("buscarAgendamento entrada: {}", consultaAgendamento);
+		}
+
 		return agendamentoService.buscarAgendamento(consultaAgendamento);
 	}
 }
