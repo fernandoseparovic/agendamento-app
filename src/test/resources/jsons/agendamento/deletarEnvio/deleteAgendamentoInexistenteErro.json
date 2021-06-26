@@ -1,3 +1,6 @@
 {
-    "Erro: ": "Agendamento inexistente id: 5"
+    "tipoErro": "NEGOCIO",
+    "erros": [
+        "Agendamento inexistente id: 5"
+    ]
 }

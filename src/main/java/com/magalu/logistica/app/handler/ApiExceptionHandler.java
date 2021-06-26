@@ -1,6 +1,6 @@
 package com.magalu.logistica.app.handler;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.magalu.logistica.app.agendamento.api.enuns.TipoErroEnum;
 import com.magalu.logistica.app.agendamento.api.exception.BusinessException;
+import com.magalu.logistica.app.agendamento.api.exception.InfraException;
+import com.magalu.logistica.app.agendamento.api.model.Fault;
 
 /**
  * Intercepta as exceptions e realiza os devidos tratamentos
@@ -45,13 +48,24 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 
 
-	@ExceptionHandler({ BusinessException.class })
-	public final ResponseEntity<Object> handleBusinessException(final BusinessException ex, 
-																final WebRequest request) {
+	@ExceptionHandler({ BusinessException.class, 
+						InfraException.class })
+	public final ResponseEntity<Fault> handleBusinessException(final Exception ex, 
+															   final WebRequest request) {
 		
-		final Map<String, String> errors = new HashMap<>();
-		errors.put("Erro: ", ex.getMessage());
-		
-		return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+		TipoErroEnum tipoErroEnum = TipoErroEnum.INFRA;
+		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+
+		if (ex instanceof BusinessException) {
+			status = HttpStatus.BAD_REQUEST;
+			tipoErroEnum = TipoErroEnum.NEGOCIO;
+		}
+
+		final Fault fault = new Fault();
+		fault.setTipoErro(tipoErroEnum);
+		fault.setErros(new ArrayList<>());
+		fault.getErros().add(ex.getMessage());
+
+		return new ResponseEntity<>(fault, status);
 	}
 }

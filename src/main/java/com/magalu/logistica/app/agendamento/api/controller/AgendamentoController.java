@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -21,9 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.magalu.logistica.app.agendamento.api.exception.BusinessException;
+import com.magalu.logistica.app.agendamento.api.exception.InfraException;
 import com.magalu.logistica.app.agendamento.api.facade.AgendamentoFacade;
 import com.magalu.logistica.app.agendamento.api.model.AgendamentoPaginado;
 import com.magalu.logistica.app.agendamento.api.model.ConsultaAgendamento;
+import com.magalu.logistica.app.agendamento.api.model.Fault;
 import com.magalu.logistica.app.agendamento.api.model.SolicitacaoAgendamento;
 
 import io.micrometer.core.lang.Nullable;
@@ -48,22 +52,42 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 @RequestMapping("/v1/agendamento")
 public class AgendamentoController {
 
+
 	@Autowired
     private AgendamentoFacade agendamentoFacade;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(AgendamentoController.class);
 
 
 	@Operation(summary = "Agenda um envio de comunicação")
 	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Agendamento realizado com sucesso", content = {
-					@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
-							 schema = @Schema(implementation = SolicitacaoAgendamento.class)) }),
-			@ApiResponse(responseCode = "400", description = "Parâmetros invalidos", content = @Content),
-			@ApiResponse(responseCode = "500", description = "Erro interno", content = @Content) })
+			@ApiResponse(responseCode = "200", description = "Agendamento realizado com sucesso", 
+						 content = { @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+							 				  schema = @Schema(implementation = SolicitacaoAgendamento.class)) }),
+
+			@ApiResponse(responseCode = "400", description = "Parâmetros invalidos", 
+						 content = { @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+				 				  		      schema = @Schema(implementation = Fault.class)) }),
+
+			@ApiResponse(responseCode = "500", description = "Erro interno", 
+						 content = { @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+						 					  schema = @Schema(implementation = Fault.class)) }) })
 	@PutMapping
 	public ResponseEntity<SolicitacaoAgendamento> agendarEnvio(
-			@Valid @RequestBody final SolicitacaoAgendamento solicitacaoAgendamento) throws BusinessException {
+			@Valid @RequestBody final SolicitacaoAgendamento solicitacaoAgendamento) 
+			throws BusinessException, InfraException {
 
-		return new ResponseEntity<>(agendamentoFacade.agendarEnvio(solicitacaoAgendamento), HttpStatus.OK);
+		try {
+			return new ResponseEntity<>(agendamentoFacade.agendarEnvio(solicitacaoAgendamento), HttpStatus.OK);
+
+		} catch (final BusinessException e) {
+			LOGGER.error("agendarEnvio - erro negocio: " + solicitacaoAgendamento, e);
+			throw e;
+
+		} catch (final Exception e) {
+			LOGGER.error("agendarEnvio - erro infra: "  + solicitacaoAgendamento, e);
+			throw new InfraException(e);
+		}
 	}
 
 
@@ -72,8 +96,14 @@ public class AgendamentoController {
 			@ApiResponse(responseCode = "200", description = "Busca realizada com sucesso", content = {
 					@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
 							 schema = @Schema(implementation = AgendamentoPaginado.class)) }),
-			@ApiResponse(responseCode = "400", description = "Parâmetros invalidos", content = @Content),
-			@ApiResponse(responseCode = "500", description = "Erro interno", content = @Content) })
+
+			@ApiResponse(responseCode = "400", description = "Parâmetros invalidos", 
+						 content = { @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+				 				  		      schema = @Schema(implementation = Fault.class)) }),
+
+			@ApiResponse(responseCode = "500", description = "Erro interno", 
+						 content = { @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+						 					  schema = @Schema(implementation = Fault.class)) }) })
 	@GetMapping
 	public ResponseEntity<AgendamentoPaginado> consultarAgendamento(
 			@Parameter @Nullable final Integer idAgendamento,
@@ -81,31 +111,54 @@ public class AgendamentoController {
 			@Parameter @Nullable @DateTimeFormat(pattern = "dd/MM/yyyy") final LocalDate dataCriacao,
 			@Parameter @Nullable @DateTimeFormat(pattern = "dd/MM/yyyy") final LocalDate dataParaEnvio,
 			@Parameter @Nullable final Integer page,
-			@Parameter @Nullable final Integer perPage) {
+			@Parameter @Nullable final Integer perPage) throws InfraException {
 
 		final ConsultaAgendamento consultaAgendamento = new ConsultaAgendamento();
-		consultaAgendamento.setIdAgendamento(idAgendamento);
-		consultaAgendamento.setMensagem(mensagem);
-		consultaAgendamento.setDataCriacao(dataCriacao);
-		consultaAgendamento.setDataParaEnvio(dataParaEnvio);
-		consultaAgendamento.setPage(page);
-		consultaAgendamento.setPerPage(perPage);
+		try {
+			consultaAgendamento.setIdAgendamento(idAgendamento);
+			consultaAgendamento.setMensagem(mensagem);
+			consultaAgendamento.setDataCriacao(dataCriacao);
+			consultaAgendamento.setDataParaEnvio(dataParaEnvio);
+			consultaAgendamento.setPage(page);
+			consultaAgendamento.setPerPage(perPage);
 
-		return new ResponseEntity<>(agendamentoFacade.buscarAgendamento(consultaAgendamento), HttpStatus.OK);
+			return new ResponseEntity<>(agendamentoFacade.buscarAgendamento(consultaAgendamento), HttpStatus.OK);
+
+		} catch (final Exception e) {
+			LOGGER.error("consultarAgendamento - erro infra: " + consultaAgendamento, e);
+			throw new InfraException(e);
+		}
 	}
 
 
 	@Operation(summary = "Deleta um agendamento de comunicação")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "Delete realizado com sucesso", content = @Content),
-			@ApiResponse(responseCode = "400", description = "Parâmetros invalidos", content = @Content),
-			@ApiResponse(responseCode = "500", description = "Erro interno", content = @Content) })
+
+			@ApiResponse(responseCode = "400", description = "Parâmetros invalidos", 
+						 content = { @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+				 				  		      schema = @Schema(implementation = Fault.class)) }),
+
+			@ApiResponse(responseCode = "500", description = "Erro interno", 
+						 content = { @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, 
+						 					  schema = @Schema(implementation = Fault.class)) }) })
 	@DeleteMapping("/{idAgendamento}")
-	public ResponseEntity<SolicitacaoAgendamento> deletarAgendamento(@PathVariable @NotNull final Integer idAgendamento) 
-			throws BusinessException {
+	public ResponseEntity<SolicitacaoAgendamento> deletarAgendamento(
+			@PathVariable @NotNull final Integer idAgendamento) 
+			throws BusinessException, InfraException {
 
-		agendamentoFacade.deletarAgendamento(idAgendamento);
+		try {
+			agendamentoFacade.deletarAgendamento(idAgendamento);
 
-		return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.OK);
+
+		} catch (final BusinessException e) {
+			LOGGER.error("deletarAgendamento - erro negocio: " + idAgendamento, e);
+			throw e;
+
+		} catch (final Exception e) {
+			LOGGER.error("deletarAgendamento - erro infra: " + idAgendamento, e);
+			throw new InfraException(e);
+		}
 	}
 }

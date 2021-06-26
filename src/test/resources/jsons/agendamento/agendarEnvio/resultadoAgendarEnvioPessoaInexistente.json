@@ -1,3 +1,6 @@
 {
-    "Erro: ": "Destinatarios Canal inexistentes no banco[Destinatario [idPessoaDestinatario=99, canalComunicacao=SMS]]"
+    "tipoErro": "NEGOCIO",
+    "erros": [
+        "Destinatarios Canal inexistentes no banco[Destinatario [idPessoaDestinatario=99, canalComunicacao=SMS]]"
+    ]
 }

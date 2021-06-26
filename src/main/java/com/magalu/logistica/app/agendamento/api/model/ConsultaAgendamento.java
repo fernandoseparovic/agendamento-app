@@ -101,4 +101,10 @@ public class ConsultaAgendamento {
 	public void setPerPage(final Integer perPage) {
 		this.perPage = perPage;
 	}
+
+	@Override
+	public String toString() {
+		return "ConsultaAgendamento [idAgendamento=" + idAgendamento + ", mensagem=" + mensagem + ", dataCriacao="
+				+ dataCriacao + ", dataParaEnvio=" + dataParaEnvio + ", page=" + page + ", perPage=" + perPage + "]";
+	}
 }

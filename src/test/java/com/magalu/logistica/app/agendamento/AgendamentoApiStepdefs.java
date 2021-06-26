@@ -17,6 +17,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.magalu.logistica.app.agendamento.api.model.AgendamentoPaginado;
+import com.magalu.logistica.app.agendamento.api.model.Fault;
 import com.magalu.logistica.app.agendamento.api.model.SolicitacaoAgendamento;
 import com.magalu.logistica.app.config.AbstractTeste;
 import com.magalu.logistica.app.utils.ArquivosUtil;
@@ -90,7 +91,7 @@ public class AgendamentoApiStepdefs extends AbstractTeste implements En {
 			if (statusCode == HttpStatus.OK.value()) {
 				responseEntity = template.exchange(builder.build().toUri(), HttpMethod.PUT, httpEntity, SolicitacaoAgendamento.class);
 			} else if(statusCode == HttpStatus.BAD_REQUEST.value()) {
-				responseEntity = template.exchange(builder.build().toUri(), HttpMethod.PUT, httpEntity, Object.class);
+				responseEntity = template.exchange(builder.build().toUri(), HttpMethod.PUT, httpEntity, Fault.class);
 			}
 		});
 
@@ -100,7 +101,7 @@ public class AgendamentoApiStepdefs extends AbstractTeste implements En {
 					.fromUri(new URI("/v1/agendamento/"))
 					.path(idAgendamento);
 			
-			responseEntity = template.exchange(builder.build().toUri(), HttpMethod.DELETE, null, Object.class);
+			responseEntity = template.exchange(builder.build().toUri(), HttpMethod.DELETE, null, Fault.class);
 		});
 
 
@@ -123,13 +124,13 @@ public class AgendamentoApiStepdefs extends AbstractTeste implements En {
 			if (responseEntity.getStatusCodeValue() == HttpStatus.OK.value()) {
 				verificarRetorno(PATH_AGENDAR_ENVIO, nomeArquivoResultado, SolicitacaoAgendamento.class);
 			} else if (responseEntity.getStatusCodeValue() == HttpStatus.BAD_REQUEST.value()) {
-				verificarRetorno(PATH_AGENDAR_ENVIO, nomeArquivoResultado, Object.class);
+				verificarRetorno(PATH_AGENDAR_ENVIO, nomeArquivoResultado, Fault.class);
 			}
 		});
 
 
 		Then("client of DELETE agendamento receives body of {string}", (String nomeArquivoResultado) -> {
-			verificarRetorno(PATH_DELETAR_ENVIO, nomeArquivoResultado, Object.class);
+			verificarRetorno(PATH_DELETAR_ENVIO, nomeArquivoResultado, Fault.class);
 		});
 	}
 
