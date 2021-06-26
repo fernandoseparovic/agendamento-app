@@ -1,14 +1,12 @@
 package com.magalu.logistica.app.handler;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -38,13 +36,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 																  final HttpHeaders headers, 
 																  final HttpStatus status, 
 																  final WebRequest request) {
-		
-		final Map<String, String> errors = ex.getBindingResult()
-											 .getAllErrors()
-											 .stream()
-											 .collect(Collectors.toMap(error -> ((FieldError) error).getField(), 
-													 				   ObjectError::getDefaultMessage));
-		return new ResponseEntity<>(errors, status);
+		final Fault fault = new Fault();
+		fault.setTipoErro(TipoErroEnum.NEGOCIO);
+		fault.setErros(new ArrayList<>());
+		fault.setErros(ex.getBindingResult()
+						 .getAllErrors()
+						 .stream()
+						 .map(error -> "campo: " + ((FieldError) error).getField() + " - " + error.getDefaultMessage())
+						 .collect(Collectors.toList()));
+		return new ResponseEntity<>(fault, status);
 	}
 
 
@@ -52,7 +52,6 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 						InfraException.class })
 	public final ResponseEntity<Fault> handleBusinessException(final Exception ex, 
 															   final WebRequest request) {
-		
 		TipoErroEnum tipoErroEnum = TipoErroEnum.INFRA;
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
 
