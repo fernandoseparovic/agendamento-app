@@ -35,6 +35,14 @@ public class Destinatario {
 	public void setIdPessoaDestinatario(final Integer idPessoaDestinatario) {
 		this.idPessoaDestinatario = idPessoaDestinatario;
 	}
+	
+	/**
+	 * @param idPessoaDestinatario the idPessoaDestinatario to set
+	 */
+	public Destinatario idPessoaDestinatario(final Integer idPessoaDestinatario) {
+		this.idPessoaDestinatario = idPessoaDestinatario;
+		return this;
+	}
 
 	/**
 	 * @return the canalComunicacao
@@ -48,6 +56,14 @@ public class Destinatario {
 	 */
 	public void setCanalComunicacao(final CanalComunicacaoEnum canalComunicacao) {
 		this.canalComunicacao = canalComunicacao;
+	}
+	
+	/**
+	 * @param canalComunicacao the canalComunicacao to set
+	 */
+	public Destinatario canalComunicacao(final CanalComunicacaoEnum canalComunicacao) {
+		this.canalComunicacao = canalComunicacao;
+		return this;
 	}
 
 	@Override

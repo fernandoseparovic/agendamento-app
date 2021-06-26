@@ -50,7 +50,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 																final WebRequest request) {
 		
 		final Map<String, String> errors = new HashMap<>();
-		errors.put("Erro negocio: ", ex.getMessage());
+		errors.put("Erro: ", ex.getMessage());
 		
 		return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
 	}

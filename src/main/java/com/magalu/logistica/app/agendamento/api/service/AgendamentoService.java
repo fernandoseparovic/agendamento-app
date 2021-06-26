@@ -18,6 +18,7 @@ import com.magalu.logistica.app.agendamento.api.domain.DestinatarioComunicacaoId
 import com.magalu.logistica.app.agendamento.api.domain.PessoaCanalComunicacao;
 import com.magalu.logistica.app.agendamento.api.domain.PessoaCanalComunicacaoId;
 import com.magalu.logistica.app.agendamento.api.domain.StatusComunicacao;
+import com.magalu.logistica.app.agendamento.api.enuns.CanalComunicacaoEnum;
 import com.magalu.logistica.app.agendamento.api.enuns.StatusComunicacaoEnum;
 import com.magalu.logistica.app.agendamento.api.exception.BusinessException;
 import com.magalu.logistica.app.agendamento.api.model.Agendamento;
@@ -74,14 +75,18 @@ public class AgendamentoService {
 					 		 .collect(Collectors.toSet());
 		
 		// Compara os ids do request com os ids do banco para verificar se o que veio no request existe no banco
-		final Set<PessoaCanalComunicacaoId> idsPessoaCanalInexistentesNoBanco = 
+		final Set<Destinatario> destinatariosCanalInexistentesNoBanco = 
 				idsPessoaCanalRequest.stream()
 							 		 .filter(request -> !idsPessoasCanalBanco.contains(request))
+							 		 .map(request -> new Destinatario()
+				 				 				.idPessoaDestinatario(request.getIdPessoa())
+				 				 				.canalComunicacao(CanalComunicacaoEnum.getCanalComunicacaoEnum(
+				 				 						request.getIdCanalComunicacao())))
 							 		 .collect(Collectors.toSet());
 		
 		// Caso existam ids que não estão no banco é lançada uma exceção
-		if(!idsPessoaCanalInexistentesNoBanco.isEmpty()) {
-			throw new BusinessException("Destinatarios Canal inexistentes no banco" + idsPessoaCanalInexistentesNoBanco);
+		if(!destinatariosCanalInexistentesNoBanco.isEmpty()) {
+			throw new BusinessException("Destinatarios Canal inexistentes no banco" + destinatariosCanalInexistentesNoBanco);
 		}
 	}
 
@@ -104,6 +109,8 @@ public class AgendamentoService {
 
 	/**
 	 * Persiste nas tabelas logistica.agendamento e logistica.destinatario_comunicacao
+	 * 
+	 * Obs: Não chamar este metodo dentro desta chasse pois não funcionará a transação
 	 * 
 	 * @param solicitacaoAgendamento Agendamento de comunicação com seus respectivos destinatarios e canais
 	 */
@@ -148,6 +155,8 @@ public class AgendamentoService {
 	/**
 	 * Deleta os registros das tabelas logistica.agendamento e logistica.destinatario_comunicacao 
 	 * pelo id do agendamento
+	 * 
+	 * Obs: Não chamar este metodo dentro desta chasse pois não funcionará a transação
 	 * 
 	 * @param idAgendamento id do agendamento
 	 */
