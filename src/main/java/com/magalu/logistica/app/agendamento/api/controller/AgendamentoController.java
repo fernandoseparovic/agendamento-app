@@ -21,10 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.magalu.logistica.app.agendamento.api.exception.BusinessException;
+import com.magalu.logistica.app.agendamento.api.facade.AgendamentoFacade;
 import com.magalu.logistica.app.agendamento.api.model.AgendamentoPaginado;
 import com.magalu.logistica.app.agendamento.api.model.ConsultaAgendamento;
 import com.magalu.logistica.app.agendamento.api.model.SolicitacaoAgendamento;
-import com.magalu.logistica.app.agendamento.api.service.AgendamentoService;
 
 import io.micrometer.core.lang.Nullable;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -49,7 +49,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 public class AgendamentoController {
 
 	@Autowired
-    private AgendamentoService agendamentoService;
+    private AgendamentoFacade agendamentoFacade;
 
 
 	@Operation(summary = "Agenda um envio de comunicação")
@@ -63,7 +63,7 @@ public class AgendamentoController {
 	public ResponseEntity<SolicitacaoAgendamento> agendarEnvio(
 			@Valid @RequestBody final SolicitacaoAgendamento solicitacaoAgendamento) throws BusinessException {
 
-		return new ResponseEntity<>(agendamentoService.agendarEnvio(solicitacaoAgendamento), HttpStatus.OK);
+		return new ResponseEntity<>(agendamentoFacade.agendarEnvio(solicitacaoAgendamento), HttpStatus.OK);
 	}
 
 
@@ -91,7 +91,7 @@ public class AgendamentoController {
 		consultaAgendamento.setPage(page);
 		consultaAgendamento.setPerPage(perPage);
 
-		return new ResponseEntity<>(agendamentoService.buscarAgendamento(consultaAgendamento), HttpStatus.OK);
+		return new ResponseEntity<>(agendamentoFacade.buscarAgendamento(consultaAgendamento), HttpStatus.OK);
 	}
 
 
@@ -104,7 +104,7 @@ public class AgendamentoController {
 	public ResponseEntity<SolicitacaoAgendamento> deletarAgendamento(@PathVariable @NotNull final Integer idAgendamento) 
 			throws BusinessException {
 
-		agendamentoService.deletarAgendamento(idAgendamento);
+		agendamentoFacade.deletarAgendamento(idAgendamento);
 
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
