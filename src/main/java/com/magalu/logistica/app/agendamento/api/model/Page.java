@@ -10,30 +10,31 @@ import java.util.Objects;
  */
 public class Page {
 
-	private Integer page;
+	private Integer pageNumber;
 	private Integer perPage;
 	private Integer totalPages;
 	private Long totalElements;
 
+
 	/**
-	 * @return the page
+	 * @return the pageNumber
 	 */
-	public Integer getPage() {
-		return page;
+	public Integer getPageNumber() {
+		return pageNumber;
 	}
 
 	/**
-	 * @param page the page to set
+	 * @param pageNumber the pageNumber to set
 	 */
-	public void setPage(final Integer page) {
-		this.page = page;
+	public void setPageNumber(final Integer pageNumber) {
+		this.pageNumber = pageNumber;
 	}
-	
+
 	/**
-	 * @param page the page to set
+	 * @param pageNumber the pageNumber to set
 	 */
-	public Page page(final Integer page) {
-		this.page = page;
+	public Page pageNumber(final Integer pageNumber) {
+		this.pageNumber = pageNumber;
 		return this;
 	}
 
@@ -105,7 +106,7 @@ public class Page {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(page, perPage, totalElements, totalPages);
+		return Objects.hash(pageNumber, perPage, totalElements, totalPages);
 	}
 
 	@Override
@@ -120,13 +121,13 @@ public class Page {
 			return false;
 		}
 		Page other = (Page) obj;
-		return Objects.equals(page, other.page) && Objects.equals(perPage, other.perPage)
+		return Objects.equals(pageNumber, other.pageNumber) && Objects.equals(perPage, other.perPage)
 				&& Objects.equals(totalElements, other.totalElements) && Objects.equals(totalPages, other.totalPages);
 	}
 
 	@Override
 	public String toString() {
-		return "Page [page=" + page + ", perPage=" + perPage + ", totalPages=" + totalPages + ", totalElements="
-				+ totalElements + "]";
+		return "Page [pageNumber=" + pageNumber + ", perPage=" + perPage + ", totalPages=" + totalPages
+				+ ", totalElements=" + totalElements + "]";
 	}
 }

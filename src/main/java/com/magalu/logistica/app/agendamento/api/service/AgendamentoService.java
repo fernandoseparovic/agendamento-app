@@ -195,7 +195,7 @@ public class AgendamentoService {
 		// Transforma os agendamentos paginados do banco nos agendamentos paginados que é retornado pelo controller
 		final AgendamentoPaginado agendamentoPaginadoModel = new AgendamentoPaginado();
 		agendamentoPaginadoModel.setPage(
-				new Page().page(agendamentoPaginadoDomain.getNumber() + 1)
+				new Page().pageNumber(agendamentoPaginadoDomain.getNumber() + 1)
 						  .perPage(agendamentoPaginadoDomain.getSize())
 						  .totalPages(agendamentoPaginadoDomain.getTotalPages())
 						  .totalElements(agendamentoPaginadoDomain.getTotalElements()));

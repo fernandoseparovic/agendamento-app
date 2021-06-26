@@ -1,6 +1,6 @@
 {
     "page": {
-        "page": 1,
+        "pageNumber": 1,
         "perPage": 100,
         "totalPages": 1,
         "totalElements": 4
