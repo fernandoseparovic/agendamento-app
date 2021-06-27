@@ -3,7 +3,7 @@ package com.magalu.logistica.app.agendamento.api.model;
 import java.util.Objects;
 
 /**
- * Contem os atributos de uma paginação
+ * Model que contem os atributos de uma paginação
  * 
  * @author Fernando Separovic
  *

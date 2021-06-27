@@ -5,6 +5,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Enum com os possiveis status para um agendamento de comunicação
+ * 
+ * @author Fernando Separovic
+ *
+ */
 public enum StatusComunicacaoEnum {
 
 	/**

@@ -8,6 +8,12 @@ import org.springframework.stereotype.Repository;
 import com.magalu.logistica.app.agendamento.api.domain.DestinatarioComunicacao;
 import com.magalu.logistica.app.agendamento.api.domain.DestinatarioComunicacaoId;
 
+/**
+ * Repositorio de acesso a base de dados para a entidade logistica.destinatario_comunicacao
+ * 
+ * @author Fernando Separovic
+ *
+ */
 @Repository
 public interface DestinatarioComunicacaoRepository 
 	extends PagingAndSortingRepository<DestinatarioComunicacao, DestinatarioComunicacaoId> {

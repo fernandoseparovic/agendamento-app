@@ -1,5 +1,11 @@
 package com.magalu.logistica.app.agendamento.api.exception;
 
+/**
+ * Exception utilizada para lançar erros de infra
+ * 
+ * @author Fernando Separovic
+ *
+ */
 public class InfraException extends Exception {
 
 	/**

@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import com.magalu.logistica.app.agendamento.api.enuns.CanalComunicacaoEnum;
 
 /**
- * Representa um destinatario com um canal de comunicação para o envio da mensagem
+ * Model que representa um destinatario com um canal de comunicação para o envio da mensagem
  * 
  * @author Fernando Separovic
  *

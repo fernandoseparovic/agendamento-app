@@ -1,7 +1,7 @@
 package com.magalu.logistica.app.agendamento.api.model;
 
 /**
- * Representa uma pessoa envolvida na comunicação
+ * Model que representa uma pessoa envolvida na comunicação
  * 
  * @author Fernando Separovic
  *

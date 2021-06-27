@@ -33,6 +33,12 @@ import com.magalu.logistica.app.agendamento.api.repository.PessoaCanalComunicaca
 import com.magalu.logistica.app.agendamento.api.utils.DateUtils;
 import com.magalu.logistica.app.agendamento.api.utils.Utils;
 
+/**
+ * Service para tratar da manutenção de agendamento de comunicações
+ * 
+ * @author Fernando Separovic
+ *
+ */
 @Service
 public class AgendamentoService {
 

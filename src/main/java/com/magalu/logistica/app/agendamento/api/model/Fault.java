@@ -5,6 +5,12 @@ import java.util.Objects;
 
 import com.magalu.logistica.app.agendamento.api.enuns.TipoErroEnum;
 
+/**
+ * Model que representa uma exceção da API
+ * 
+ * @author Fernando Separovic
+ *
+ */
 public class Fault {
 
 	private TipoErroEnum tipoErro;

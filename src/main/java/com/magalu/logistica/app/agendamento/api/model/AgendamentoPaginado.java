@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Paginação para agendamentos
+ * Model para paginação para agendamentos
  * 
  * @author Fernando Separovic
  *

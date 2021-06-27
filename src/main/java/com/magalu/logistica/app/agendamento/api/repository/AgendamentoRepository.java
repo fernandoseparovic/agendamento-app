@@ -11,6 +11,12 @@ import org.springframework.stereotype.Repository;
 
 import com.magalu.logistica.app.agendamento.api.domain.Agendamento;
 
+/**
+ * Repositorio de acesso a base de dados para a entidade logistica.agendamento
+ * 
+ * @author Fernando Separovic
+ *
+ */
 @Repository
 public interface AgendamentoRepository extends PagingAndSortingRepository<Agendamento, Integer> {
 

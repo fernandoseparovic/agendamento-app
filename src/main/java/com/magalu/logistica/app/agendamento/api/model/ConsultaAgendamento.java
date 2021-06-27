@@ -3,7 +3,7 @@ package com.magalu.logistica.app.agendamento.api.model;
 import java.time.LocalDate;
 
 /**
- * Possui os dados utilizados na consulta de agendamento
+ * Model que possui os dados utilizados na consulta de agendamento
  * 
  * @author Fernando Separovic
  *

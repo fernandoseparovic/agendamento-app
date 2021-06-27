@@ -11,6 +11,13 @@ import com.magalu.logistica.app.agendamento.api.model.ConsultaAgendamento;
 import com.magalu.logistica.app.agendamento.api.model.SolicitacaoAgendamento;
 import com.magalu.logistica.app.agendamento.api.service.AgendamentoService;
 
+/**
+ * Facade responsavel por simplificar a exposição das principais funcionalidades relativas 
+ * a manutenção de agendamentos de comunicação
+ * 
+ * @author Fernando Separovic
+ *
+ */
 @Service
 public class AgendamentoFacade {
 
