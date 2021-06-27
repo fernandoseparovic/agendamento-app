@@ -19,8 +19,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.magalu.logistica.app.agendamento.api.model.AgendamentoPaginado;
 import com.magalu.logistica.app.agendamento.api.model.Fault;
 import com.magalu.logistica.app.agendamento.api.model.SolicitacaoAgendamento;
-import com.magalu.logistica.app.config.AbstractTeste;
-import com.magalu.logistica.app.utils.ArquivosUtil;
+import com.magalu.logistica.app.test.config.AbstractTeste;
+import com.magalu.logistica.app.test.utils.ArquivosUtil;
 
 import cucumber.api.java8.En;
 

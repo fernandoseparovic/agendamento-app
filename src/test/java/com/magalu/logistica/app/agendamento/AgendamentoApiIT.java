@@ -2,7 +2,7 @@ package com.magalu.logistica.app.agendamento;
 
 import org.junit.runner.RunWith;
 
-import com.magalu.logistica.app.config.AbstractTeste;
+import com.magalu.logistica.app.test.config.AbstractTeste;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
