@@ -10,6 +10,7 @@ import com.magalu.logistica.app.agendamento.api.model.AgendamentoPaginado;
 import com.magalu.logistica.app.agendamento.api.model.ConsultaAgendamento;
 import com.magalu.logistica.app.agendamento.api.model.SolicitacaoAgendamento;
 import com.magalu.logistica.app.agendamento.api.service.AgendamentoService;
+import com.magalu.logistica.app.agendamento.api.service.PessoaService;
 
 /**
  * Facade responsavel por simplificar a exposição das principais funcionalidades relativas 
@@ -24,6 +25,10 @@ public class AgendamentoFacade {
 	@Autowired
 	private AgendamentoService agendamentoService;
 	
+	@Autowired
+	private PessoaService pessoaService;
+	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(AgendamentoFacade.class);
 
 	/**
@@ -41,7 +46,7 @@ public class AgendamentoFacade {
 		}
 
 		// Verifica se existem as pessoas com seus respectivos canais de comunicação para envio
-		agendamentoService.verificarExistenciaPessoaCanalComunicacao(solicitacaoAgendamento.getDestinatarios());
+		pessoaService.verificarExistenciaPessoaCanalComunicacao(solicitacaoAgendamento.getDestinatarios());
 		
 		// Persiste no banco o agendamento e seus respectivos destinatarios comunicação
 		agendamentoService.persistirAgendamentoDestinatarios(solicitacaoAgendamento);
