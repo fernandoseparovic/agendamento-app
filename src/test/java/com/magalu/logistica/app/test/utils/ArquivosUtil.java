@@ -1,4 +1,4 @@
-package com.magalu.logistica.app.utils;
+package com.magalu.logistica.app.test.utils;
 
 import java.io.FileInputStream;
 import java.io.IOException;
